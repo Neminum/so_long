@@ -1,0 +1,4 @@
+check for validity
+parse the maps
+assign attributes to values
+
