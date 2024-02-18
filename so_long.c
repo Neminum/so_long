@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobias <tobias@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:29 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/14 18:23:56 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/16 16:09:22 by tobias           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,128 +15,57 @@
 int	main(void)
 {
 	int				i;
-	int				fd;
-	char			*temp;
 	char			**map;
 	static t_player	p;
+	static t_level	l;
+	void	*img;
+	void	*mlx;
 
-	temp = NULL;
 	map = NULL;
-	fd = open("maps/map_small.ber", O_RDONLY);
+	map = fetch_map(map);
+	map_stats(map, &p, &l);
+	mlx = mlx_init(1920, 1080, "test", true);
+	img = mlx_new_image(mlx, 1920, 1080);
+
+
 	i = -1;
-	while (i != -2)
-	{
-		temp = get_next_line(fd);
-		if (temp == NULL)
-			break ;
-		map = ft_pointjoin(map, temp);
-	}
-	i = -1;
-	find_player(map, &p);
-	movement(map, &p, 'w');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 'w');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 'd');
-	movement(map, &p, 's');
-	movement(map, &p, 's');
-	movement(map, &p, 'a');
-	movement(map, &p, 'a');
-	movement(map, &p, 'a');
-	movement(map, &p, 'a');
-	movement(map, &p, 'a');
 	while (map[++i] != NULL)
 		ft_printf("%s", map[i]);
-	ft_printf("%d", p.score);
-	i = -1;
-	while (map[++i] != NULL)
-		free (map[i]);
-	free (map);
+	ft_printf("%d\n", p.steps);
+
+	free_map(map);
 	return (0);
 }
 
-char	**ft_pointjoin(char **dest, char *src)
+void	movement(char **map, t_level *l, t_player *p, char key)
 {
-	char	**ret;
-	int		i;
-	int		j;
+	int	x;
+	int	y;
 
-	if (!src)
-		exit (0);
-	i = 0;
-	j = -1;
-	if (dest != NULL)
-	{
-		while (dest[i] != NULL)
-			++i;
-	}
-	ret = ft_calloc(sizeof(char *), i + 2);
-	ret[i] = src;
-	if (dest != NULL)
-		while (--i >= 0)
-			ret[i] = dest[i];
-	free(dest);
-	return (ret);
-}
-
-void	find_player(char **map, t_player *p)
-{
-	while (map[p->y] != NULL)
-	{
-		while (map[p->y][p->x] != '\0')
-		{
-			if (map[p->y][p->x] == 'P')
-				return ;
-			p->x++;
-		}
-		p->x = 0;
-		p->y++;
-	}
-	ft_printf("Error\nCan\'t find Player\n");
-	exit (0);
-}
-
-void	movement(char **map, t_player *p, char key)
-{
-	if (key == 'w' && map[p->y - 1][p->x] != '1')
-	{
-		p->lt = map[p->y - 1][p->x];
+	x = p->x;
+	y = p->y;
+	if (key == 'W')
+		--y;
+	else if (key == 'S')
+		++y;
+	else if (key == 'A')
+		--x;
+	else if (key == 'D')
+		++x;
+	if (map[y][x] == '1')
+		return;
+	if (p->lt == 'E')
+		map[p->y][p->x] = 'E';
+	else
 		map[p->y][p->x] = '0';
-		p->y--;
-		map[p->y][p->x] = 'P';
-	}
-	else if (key == 's' && map[p->y + 1][p->x] != '1')
-	{
-		p->lt = map[p->y + 1][p->x];
-		map[p->y][p->x] = '0';
-		p->y++;
-		map[p->y][p->x] = 'P';
-	}
-	else if (key == 'd' && map[p->y][p->x + 1] != '1')
-	{
-		p->lt = map[p->y][p->x + 1];
-		map[p->y][p->x] = '0';
-		p->x++;
-		map[p->y][p->x] = 'P';
-	}
-	else if (key == 'a' && map[p->y][p->x - 1] != '1')
-	{
-		p->lt = map[p->y][p->x - 1];
-		map[p->y][p->x] = '0';
-		p->x--;
-		map[p->y][p->x] = 'P';
-	}
+	p->lt = map[y][x];
+	p->x = x;
+	p->y = y;
+	map[p->y][p->x] = 'P';
 	p->steps++;
 	if (p->lt == 'C')
 		p->score++;
-	else if (p->lt == 'E' && p->score >= 1)
+	else if (p->lt == 'E' && p->score >= l->target_score)
 	{
 		ft_printf("Conglaturations");
 		exit (0);

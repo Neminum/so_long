@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
+#    By: tobias <tobias@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/02/14 12:13:29 by tsurma           ###   ########.fr        #
+#    Updated: 2024/02/16 16:35:23 by tobias           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3
-NAME = 
+NAME = so_long
 MAKEFLAGS = --no-print-directory
 
 SRC = 
