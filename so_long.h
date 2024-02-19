@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobias <tobias@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:32 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/16 16:06:20 by tobias           ###   ########.fr       */
+/*   Updated: 2024/02/19 17:42:41 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include "MLX42/include/MLX42/MLX42.h"
+# include "../MLX42/include/MLX42/MLX42.h"
 
 typedef struct player
 {
@@ -30,24 +30,34 @@ typedef struct player
 
 typedef struct level
 {
+	int		fd;
 	size_t	max_x;
 	size_t	max_y;
+	size_t	temp_x;
+	size_t	temp_y;
 	size_t	target_score;
-	size_t	Exits;
-	size_t	Players;
-
+	size_t	poss_score;
+	size_t	exits;
+	size_t	poss_exit;
 }	t_level;
 
 
 
 int		main(void);
-void	movement(char **map, t_level *l, t_player *p, char key);
+int		movement(char **map, t_level *l, t_player *p, char key);
 
 //Map Functions
-char	**fetch_map(char **map);
+char	**fetch_map(char **map, t_level *l);
 char	**ft_pointjoin(char **dest, char *src);
-void	map_stats(char **map, t_player *p,  t_level *l);
-void	pos_analyse(char **map, t_player *p, t_level *l, size_t x, size_t y);
+int		map_stats(char **map, t_player *p, t_level *l);
+void	pos_analyse(char **map, t_player *p, t_level *l);
 void	free_map(char **map);
+void	print_map_terminal(char **map);
+void	find_path(t_level *l, t_player *p, char **map);
+int		wanderer(char **map, int x, int y, t_level *l);
+char	**cpy_map(char **mapc, char **map, t_level *l);
+int	wall_check(char	**map, t_level *l);
+
+
 
 #endif
