@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:32 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/19 17:42:41 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/21 13:53:49 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	free_map(char **map);
 void	print_map_terminal(char **map);
 void	find_path(t_level *l, t_player *p, char **map);
 int		wanderer(char **map, int x, int y, t_level *l);
-char	**cpy_map(char **mapc, char **map, t_level *l);
-int	wall_check(char	**map, t_level *l);
+char	**cpy_map(char **mapc, char **map);
+int		wall_check(char	**map, t_level *l);
 
 
 

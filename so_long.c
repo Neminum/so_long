@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:29 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/19 17:47:44 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/26 14:04:47 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,8 @@ int	main(void)
 	map_stats(map, &p, &l);
 	find_path(&l, &p, map);
 
-	void	*mlx;
-
-	mlx = mlx_init(1920, 1080, "Test", true);
-	mlx_loop(mlx);
-
-
-
+	movement(map, &l, &p, 'W');
+	print_map_terminal(map);
 	free_map(map);
 	return (0);
 }

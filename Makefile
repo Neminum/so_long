@@ -6,16 +6,20 @@
 #    By: tobias <tobias@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/02/16 16:35:23 by tobias           ###   ########.fr        #
+#    Updated: 2024/02/21 13:51:52 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3
 NAME = so_long
+MLXFLAGS = -Iinclude -ldl -lglfw -pthread -lm
 MAKEFLAGS = --no-print-directory
 
-SRC = 
+SRC = so_long.c\
+     so_long_map.c\
+     so_long_mlx.c\
+    so_long_path.c 
 
 OBJ = $(SRC:.c=.o)
 
@@ -23,7 +27,7 @@ all: $(NAME)
 
 $(NAME) : $(OBJ)
 	@ make -C libft
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) libft/*.o
+	$(CC) $(CFLAGS) $(MLXFLAGS) -o $(NAME) $(OBJ) libft/libft.a ../MLX42/build/libmlx42.a
 
 clean :
 	make fclean -C libft
