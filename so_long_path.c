@@ -6,13 +6,13 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 13:50:50 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/21 13:54:10 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/28 18:03:43 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	find_path(t_level *l, t_player *p, char **map)
+void	find_path(t_level *l, t_player *p)
 {
 	char	**mapc;
 	int		y;
@@ -21,18 +21,18 @@ void	find_path(t_level *l, t_player *p, char **map)
 	mapc = NULL;
 	x = p->x;
 	y = p->y;
-	mapc = cpy_map(mapc, map);
-	if (wall_check(mapc, l) != 0)
+	mapc = cpy_map(mapc, l->map);
+	if (wall_check(l) != 0)
 	{
 		free_map(mapc);
-		free_map(map);
+		free_map(l->map);
 		ft_printf("Error\nMap borders invalid\n");
 		exit (0);
 	}
 	if (wanderer(mapc, x, y, l) == 1)
 	{
 		free_map(mapc);
-		free_map(map);
+		free_map(l->map);
 		ft_printf("Error\nMap path invalid\n");
 		exit (0);
 	}
@@ -40,20 +40,20 @@ void	find_path(t_level *l, t_player *p, char **map)
 	return ;
 }
 
-int	wall_check(char	**map, t_level *l)
+int	wall_check(t_level *l)
 {
 	size_t	x;
 	size_t	y;
 
 	x = 0;
 	y = 0;
-	while (map[y] != NULL)
+	while (l->map[y] != NULL)
 	{
 		x = 0;
-		while (map[y][x] != '\n')
+		while (l->map[y][x] != '\n')
 		{
 			if (((y == 0 || y == l->max_y) || (x == 0 || x == l->max_x - 1))
-				&& map[y][x] != '1')
+				&& l->map[y][x] != '1')
 				return (1);
 			++x;
 		}

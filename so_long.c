@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:29 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/26 14:04:47 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/28 18:24:49 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,58 +16,47 @@ int	main(void)
 {
 	static t_player	p;
 	static t_level	l;
-	char			**map;
+	static t_all	a;
 
+
+	a.level = &l;
+	a.player = &p;
+	a.mlx = NULL;
 	l.fd = open("maps/map_small.ber", O_RDONLY);
-	map = NULL;
-	map = fetch_map(map, &l);
-	map_stats(map, &p, &l);
-	find_path(&l, &p, map);
 
-	movement(map, &l, &p, 'W');
-	print_map_terminal(map);
-	free_map(map);
+	fetch_map(&l);
+	map_stats(&p, &l);
+	find_path(&l, &p);
+	a.mlx = window(&l);
+
+	mlx_key_hook(a.mlx, &movement, &a);
+	print_map(l.map, a.mlx);
+	mlx_loop(a.mlx);
+	free_map(l.map);
+	mlx_terminate(a.mlx);
 	return (0);
 }
 
-void	print_map_terminal(char **map)
+// void	print_map_terminal(char **map)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (map[++i] != NULL)
+// 		ft_printf("%s", map[i]);
+// }
+
+void	*window(t_level *l)
 {
-	int	i;
+	void		*mlx;
+	int			x;
+	int			y;
+	int			multiplier;
 
-	i = -1;
-	while (map[++i] != NULL)
-		ft_printf("%s", map[i]);
-}
+	multiplier = 50;
+	x = (l->max_x) * multiplier;
+	y = (l->max_y + 1) * multiplier;
 
-int	movement(char **map, t_level *l, t_player *p, char key)
-{
-	int	x;
-	int	y;
-
-	x = p->x;
-	y = p->y;
-	if (key == 'W')
-		--y;
-	else if (key == 'S')
-		++y;
-	else if (key == 'A')
-		--x;
-	else if (key == 'D')
-		++x;
-	if (map[y][x] == '1')
-		return (-1);
-	if (p->lt == 'E')
-		map[p->y][p->x] = 'E';
-	else
-		map[p->y][p->x] = '0';
-	p->lt = map[y][x];
-	p->x = x;
-	p->y = y;
-	map[p->y][p->x] = 'P';
-	p->steps++;
-	if (p->lt == 'C')
-		p->score++;
-	else if (p->lt == 'E' && p->score >= l->target_score)
-		return (1);
-	return (0);
+	mlx = mlx_init(x, y, "Deep Terra", false);
+	return (mlx);
 }

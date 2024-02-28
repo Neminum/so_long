@@ -6,13 +6,13 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:19:58 by tobias            #+#    #+#             */
-/*   Updated: 2024/02/19 14:01:27 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/02/28 18:01:13 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**fetch_map(char **map, t_level *l)
+void	fetch_map(t_level *l)
 {
 	char	*temp;
 	int		i;
@@ -25,9 +25,9 @@ char	**fetch_map(char **map, t_level *l)
 		temp = get_next_line(l->fd);
 		if (temp == NULL)
 			break ;
-		map = ft_pointjoin(map, temp);
+		l->map = ft_pointjoin(l->map, temp);
 	}
-	return (map);
+
 }
 
 char	**ft_pointjoin(char **dest, char *src)
@@ -54,14 +54,14 @@ char	**ft_pointjoin(char **dest, char *src)
 	return (ret);
 }
 
-int	map_stats(char **map, t_player *p, t_level *l)
+int	map_stats(t_player *p, t_level *l)
 {
-	while (map[l->temp_y] != NULL)
+	while (l->map[l->temp_y] != NULL)
 	{
 		l->temp_x = 0;
-		while (map[l->temp_y][l->temp_x] != '\n')
+		while (l->map[l->temp_y][l->temp_x] != '\n')
 		{
-			pos_analyse(map, p, l);
+			pos_analyse(p, l);
 			l->temp_x++;
 		}
 		l->temp_y++;
@@ -71,30 +71,31 @@ int	map_stats(char **map, t_player *p, t_level *l)
 	if (l->exits != 1)
 	{
 		ft_printf("Error\nInvalid exit spawns\n");
-		free_map(map);
+		free_map(l->map);
 		exit (0);
 	}
 	return (0);
 }
 
-void	pos_analyse(char **map, t_player *p, t_level *l)
+void	pos_analyse(t_player *p, t_level *l)
 {
-	if (map[l->temp_y][l->temp_x] == '1' || (map[l->temp_y][l->temp_x] == '0'))
+	if (l->map[l->temp_y][l->temp_x] == '1' ||
+		(l->map[l->temp_y][l->temp_x] == '0'))
 		return ;
-	else if (map[l->temp_y][l->temp_x] == 'P')
+	else if (l->map[l->temp_y][l->temp_x] == 'P')
 	{
 		if (p->x != 0 || p->y != 0)
 		{
 			ft_printf("Error\nToo many player spawns\n");
-			free_map(map);
+			free_map(l->map);
 			exit (0);
 		}
 		p->x = l->temp_x;
 		p->y = l->temp_y;
 	}
-	else if (map[l->temp_y][l->temp_x] == 'C')
+	else if (l->map[l->temp_y][l->temp_x] == 'C')
 		l->target_score++;
-	else if (map[l->temp_y][l->temp_x] == 'E')
+	else if (l->map[l->temp_y][l->temp_x] == 'E')
 		l->exits++;
 }
 
