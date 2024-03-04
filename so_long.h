@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:32 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/28 18:27:16 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/04 19:57:32 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include "../MLX42/include/MLX42/MLX42.h"
-
-
 
 typedef struct player
 {
@@ -45,34 +43,58 @@ typedef struct level
 	size_t	poss_exit;
 }	t_level;
 
+typedef struct textures
+{
+	mlx_texture_t	*wall_t;
+	mlx_image_t		*wall;
+	mlx_texture_t	*ground_t;
+	mlx_image_t		*ground;
+	mlx_texture_t	*character_t;
+	mlx_image_t		*character;
+	mlx_texture_t	*collectible_t;
+	mlx_image_t		*collectible;
+	mlx_texture_t	*lexit_t;
+	mlx_image_t		*lexit;
+
+}	t_tex;
+
 typedef struct all
 {
 	void		*mlx;
 	t_player	*player;
 	t_level		*level;
+	t_tex		*tex;
+
 }	t_all;
+
+typedef enum err_codes
+{
+	COMPLETE,
+	PSPAWNS,
+	ESPAWNS,
+	MWALLS,
+	NOPATH,
+	UNKNOWN
+}	t_errs;
 
 int		main(void);
 void	movement(mlx_key_data_t keydata, void *b);
-int		step(t_player *p, t_level *l, t_all *a);
-
 
 //Map Functions
-void	fetch_map(t_level *l);
+void	fetch_map(t_all *a);
 char	**ft_pointjoin(char **dest, char *src);
-int		map_stats(t_player *p, t_level *l);
-void	pos_analyse(t_player *p, t_level *l);
+int		map_stats(t_all *a);
 void	free_map(char **map);
-// void	print_map_terminal(char **map);
-void	find_path(t_level *l, t_player *p);
-int		wanderer(char **map, int x, int y, t_level *l);
-char	**cpy_map(char **mapc, char **map);
-int		wall_check(t_level *l);
+void	find_path(t_all *a);
 
 //MLX functions
 void	*window(t_level *l);
-void	print_map(char **map, mlx_t *mlx);
+void	print_map(t_all *a);
+void	load_textures(t_all *a, t_tex *t);
+void	put_tile(int y, int x, t_all *a);
 
+
+void	exit_clean(t_all *a, char **mapc, t_errs err);
 
 
 #endif

@@ -6,7 +6,7 @@
 #    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/02/28 18:20:41 by tsurma           ###   ########.fr        #
+#    Updated: 2024/03/04 20:44:25 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ all: $(NAME)
 
 $(NAME) : $(OBJ)
 	@ make -C libft
-	$(CC) $(CFLAGS) $(MLXFLAGS) -o $(NAME) $(OBJ) libft/libft.a ../MLX42/build/libmlx42.a
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) libft/libft.a ../MLX42/build/libmlx42.a $(MLXFLAGS)
 
 clean :
 	make fclean -C libft

@@ -6,41 +6,36 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 13:50:50 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/28 18:03:43 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/04 19:12:10 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	find_path(t_level *l, t_player *p)
+static int	wanderer(char **map, int x, int y, t_level *l);
+static char	**cpy_map(char **mapc, char **map);
+static int	wall_check(t_level *l);
+
+
+void	find_path(t_all *a)
 {
 	char	**mapc;
 	int		y;
 	int		x;
 
 	mapc = NULL;
-	x = p->x;
-	y = p->y;
-	mapc = cpy_map(mapc, l->map);
-	if (wall_check(l) != 0)
-	{
-		free_map(mapc);
-		free_map(l->map);
-		ft_printf("Error\nMap borders invalid\n");
-		exit (0);
-	}
-	if (wanderer(mapc, x, y, l) == 1)
-	{
-		free_map(mapc);
-		free_map(l->map);
-		ft_printf("Error\nMap path invalid\n");
-		exit (0);
-	}
+	x = a->player->x;
+	y = a->player->y;
+	mapc = cpy_map(mapc, a->level->map);
+	if (wall_check(a->level) != 0)
+		exit_clean(a, mapc, MWALLS);
+	if (wanderer(mapc, x, y, a->level) == 1)
+		exit_clean(a, mapc, NOPATH);
 	free_map(mapc);
 	return ;
 }
 
-int	wall_check(t_level *l)
+static int	wall_check(t_level *l)
 {
 	size_t	x;
 	size_t	y;
@@ -64,7 +59,7 @@ int	wall_check(t_level *l)
 	return (0);
 }
 
-int	wanderer(char **map, int x, int y, t_level *l)
+static int	wanderer(char **map, int x, int y, t_level *l)
 {
 	if (map[y][x] == 'C')
 		l->poss_score++;
@@ -84,7 +79,7 @@ int	wanderer(char **map, int x, int y, t_level *l)
 	return (1);
 }
 
-char	**cpy_map(char **mapc, char **map)
+static char	**cpy_map(char **mapc, char **map)
 {
 	int	i;
 

@@ -6,13 +6,16 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:19:58 by tobias            #+#    #+#             */
-/*   Updated: 2024/02/28 18:01:13 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/04 19:50:45 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	fetch_map(t_level *l)
+static int	pos_analyse(t_player *p, t_level *l);
+
+
+void	fetch_map(t_all *a)
 {
 	char	*temp;
 	int		i;
@@ -22,10 +25,12 @@ void	fetch_map(t_level *l)
 
 	while (i != -2)
 	{
-		temp = get_next_line(l->fd);
+		temp = get_next_line(a->level->fd);
 		if (temp == NULL)
 			break ;
-		l->map = ft_pointjoin(l->map, temp);
+		a->level->map = ft_pointjoin(a->level->map, temp);
+		if (a->level->map == NULL)
+			exit_clean(a, NULL, UNKNOWN);
 	}
 
 }
@@ -46,6 +51,8 @@ char	**ft_pointjoin(char **dest, char *src)
 			++i;
 	}
 	ret = ft_calloc(sizeof(char *), i + 2);
+	if (!ret)
+		return (NULL);
 	ret[i] = src;
 	if (dest != NULL)
 		while (--i >= 0)
@@ -54,42 +61,35 @@ char	**ft_pointjoin(char **dest, char *src)
 	return (ret);
 }
 
-int	map_stats(t_player *p, t_level *l)
+int	map_stats(t_all *a)
 {
-	while (l->map[l->temp_y] != NULL)
+	while (a->level->map[a->level->temp_y] != NULL)
 	{
-		l->temp_x = 0;
-		while (l->map[l->temp_y][l->temp_x] != '\n')
+		a->level->temp_x = 0;
+		while (a->level->map[a->level->temp_y][a->level->temp_x] != '\n')
 		{
-			pos_analyse(p, l);
-			l->temp_x++;
+			if (pos_analyse(a->player, a->level) == -1)
+				exit_clean(a, NULL, PSPAWNS);
+			a->level->temp_x++;
 		}
-		l->temp_y++;
+		a->level->temp_y++;
 	}
-	l->max_x = l->temp_x;
-	l->max_y = l->temp_y - 1;
-	if (l->exits != 1)
-	{
-		ft_printf("Error\nInvalid exit spawns\n");
-		free_map(l->map);
-		exit (0);
-	}
+	a->level->max_x = a->level->temp_x;
+	a->level->max_y = a->level->temp_y - 1;
+	if (a->level->exits != 1)
+		exit_clean(a, NULL, ESPAWNS);
 	return (0);
 }
 
-void	pos_analyse(t_player *p, t_level *l)
+static int	pos_analyse(t_player *p, t_level *l)
 {
 	if (l->map[l->temp_y][l->temp_x] == '1' ||
 		(l->map[l->temp_y][l->temp_x] == '0'))
-		return ;
+		return (0);
 	else if (l->map[l->temp_y][l->temp_x] == 'P')
 	{
 		if (p->x != 0 || p->y != 0)
-		{
-			ft_printf("Error\nToo many player spawns\n");
-			free_map(l->map);
-			exit (0);
-		}
+			return (-1);
 		p->x = l->temp_x;
 		p->y = l->temp_y;
 	}
@@ -97,6 +97,7 @@ void	pos_analyse(t_player *p, t_level *l)
 		l->target_score++;
 	else if (l->map[l->temp_y][l->temp_x] == 'E')
 		l->exits++;
+	return (0);
 }
 
 void	free_map(char **map)
@@ -108,3 +109,5 @@ void	free_map(char **map)
 		free (map[i]);
 	free (map);
 }
+
+

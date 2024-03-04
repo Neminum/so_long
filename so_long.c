@@ -6,38 +6,41 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:29 by tsurma            #+#    #+#             */
-/*   Updated: 2024/02/28 18:24:49 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/04 20:48:51 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+// static void	print_map_terminal(char **map);
+
+
 int	main(void)
 {
 	static t_player	p;
 	static t_level	l;
+	static t_tex	t;
 	static t_all	a;
-
 
 	a.level = &l;
 	a.player = &p;
+	a.tex = &t;
 	a.mlx = NULL;
-	l.fd = open("maps/map_small.ber", O_RDONLY);
+	l.fd = open("maps/map_minimal.ber", O_RDONLY);
 
-	fetch_map(&l);
-	map_stats(&p, &l);
-	find_path(&l, &p);
+	fetch_map(&a);
+	map_stats(&a);
+	find_path(&a);
 	a.mlx = window(&l);
-
+	load_textures(&a, &t);
+	print_map(&a);
 	mlx_key_hook(a.mlx, &movement, &a);
-	print_map(l.map, a.mlx);
 	mlx_loop(a.mlx);
-	free_map(l.map);
-	mlx_terminate(a.mlx);
+	exit_clean(&a, NULL, UNKNOWN);
 	return (0);
 }
 
-// void	print_map_terminal(char **map)
+// static void	print_map_terminal(char **map)
 // {
 // 	int	i;
 
@@ -59,4 +62,25 @@ void	*window(t_level *l)
 
 	mlx = mlx_init(x, y, "Deep Terra", false);
 	return (mlx);
+}
+
+void	exit_clean(t_all *a, char **mapc, t_errs err)
+{
+	if (a->mlx != NULL)
+		mlx_terminate(a->mlx);
+	if (mapc != NULL)
+		free_map(mapc);
+	if (a->level->map != NULL)
+		free_map(a->level->map);
+	if (err == COMPLETE)
+		ft_printf("The mine grows deeper");
+	else if (err == PSPAWNS)
+		ft_printf("Error\nInvalid Player Spawns");
+	else if (err == ESPAWNS)
+		ft_printf("Error\nInvalid Exit Spawns");
+	else if (err == MWALLS)
+		ft_printf("Error\nInvalid Level Borders");
+	else if (err == NOPATH)
+		ft_printf("Error\nNo possible path");
+	exit(0);
 }
