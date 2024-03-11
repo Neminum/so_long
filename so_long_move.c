@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 17:08:36 by tsurma            #+#    #+#             */
-/*   Updated: 2024/03/04 20:04:43 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 17:55:09 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	movement(mlx_key_data_t keydata, void *b)
 		exit_clean(a, NULL, -1);
 	if (a->level->map[a->level->temp_y][a->level->temp_x] == '1')
 		return ;
-	else if (a->level->temp_y != a->player->y || a->level->temp_x != a->player->x)
+	else if (a->level->temp_y != a->player->y
+		|| a->level->temp_x != a->player->x)
 		step(a);
 }
 
@@ -71,6 +72,14 @@ static void	score_increase(t_all *a)
 
 static void	step_increase(t_all *a)
 {
+	char	*moves;
+
 	a->player->steps++;
-	ft_printf("%i\n", a->player->steps);
+	moves = ft_itoa(a->player->steps);
+	if (a->mess->step_count != NULL)
+		a->mess->step_count->enabled = 0;
+	a->mess->step_count
+		= mlx_put_string(a->mlx, moves, 10, ((a->level->max_y + 1) * 50));
+	a->mess->step_count->enabled = 1;
+	free(moves);
 }

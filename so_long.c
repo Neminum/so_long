@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:29 by tsurma            #+#    #+#             */
-/*   Updated: 2024/03/04 20:48:51 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 17:55:31 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,23 @@
 // static void	print_map_terminal(char **map);
 
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	static t_player	p;
 	static t_level	l;
 	static t_tex	t;
 	static t_all	a;
+	static t_mess	mess;
 
+	argc = 0;
 	a.level = &l;
 	a.player = &p;
 	a.tex = &t;
 	a.mlx = NULL;
-	l.fd = open("maps/map_minimal.ber", O_RDONLY);
-
+	a.mess = &mess;
+	l.fd = open(argv[1], O_RDONLY);
+	if (l.fd == -1)
+		exit_clean(&a, NULL, UNKNOWN);
 	fetch_map(&a);
 	map_stats(&a);
 	find_path(&a);
@@ -60,7 +64,7 @@ void	*window(t_level *l)
 	x = (l->max_x) * multiplier;
 	y = (l->max_y + 1) * multiplier;
 
-	mlx = mlx_init(x, y, "Deep Terra", false);
+	mlx = mlx_init(x, y + 20, "Deep Terra", false);
 	return (mlx);
 }
 

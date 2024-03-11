@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:32 by tsurma            #+#    #+#             */
-/*   Updated: 2024/03/04 19:57:32 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 15:59:08 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,18 @@ typedef struct textures
 
 }	t_tex;
 
+typedef struct s_messages
+{
+	mlx_image_t	*step_count;
+}	t_mess;
+
 typedef struct all
 {
 	void		*mlx;
 	t_player	*player;
 	t_level		*level;
 	t_tex		*tex;
+	t_mess		*mess;
 
 }	t_all;
 
@@ -77,7 +83,8 @@ typedef enum err_codes
 	UNKNOWN
 }	t_errs;
 
-int		main(void);
+
+int		main(int argc, char **argv);
 void	movement(mlx_key_data_t keydata, void *b);
 
 //Map Functions
@@ -93,6 +100,7 @@ void	print_map(t_all *a);
 void	load_textures(t_all *a, t_tex *t);
 void	put_tile(int y, int x, t_all *a);
 
+void	load_mess(t_all *a);
 
 void	exit_clean(t_all *a, char **mapc, t_errs err);
 

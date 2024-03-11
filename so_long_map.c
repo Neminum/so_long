@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:19:58 by tobias            #+#    #+#             */
-/*   Updated: 2024/03/04 19:50:45 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 17:54:35 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	map_stats(t_all *a)
 	a->level->max_y = a->level->temp_y - 1;
 	if (a->level->exits != 1)
 		exit_clean(a, NULL, ESPAWNS);
+	if (a->level->target_score == 0)
+		exit_clean(a, NULL, UNKNOWN);
 	return (0);
 }
 

@@ -6,12 +6,12 @@
 #    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/03/04 20:44:25 by tsurma           ###   ########.fr        #
+#    Updated: 2024/03/11 15:45:57 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3
+CFLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
 NAME = so_long
 MLXFLAGS = -Iinclude -ldl -lglfw -pthread -lm
 MAKEFLAGS = --no-print-directory
@@ -20,7 +20,8 @@ SRC = so_long.c\
      so_long_map.c\
      so_long_mlx.c\
     so_long_path.c\
-	so_long_move.c
+	so_long_move.c\
+	so_long_messages.c
 
 OBJ = $(SRC:.c=.o)
 
