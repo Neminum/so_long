@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:32 by tsurma            #+#    #+#             */
-/*   Updated: 2024/03/11 15:59:08 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 18:05:33 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ typedef enum err_codes
 	UNKNOWN
 }	t_errs;
 
-
 int		main(int argc, char **argv);
 void	movement(mlx_key_data_t keydata, void *b);
 
@@ -99,10 +98,7 @@ void	*window(t_level *l);
 void	print_map(t_all *a);
 void	load_textures(t_all *a, t_tex *t);
 void	put_tile(int y, int x, t_all *a);
-
 void	load_mess(t_all *a);
-
 void	exit_clean(t_all *a, char **mapc, t_errs err);
-
 
 #endif

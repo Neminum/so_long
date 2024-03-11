@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 17:08:36 by tsurma            #+#    #+#             */
-/*   Updated: 2024/03/11 17:55:09 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 18:01:38 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int	step(t_all *a);
 static void	score_increase(t_all *a);
 static void	step_increase(t_all *a);
-
 
 void	movement(mlx_key_data_t keydata, void *b)
 {

@@ -6,14 +6,11 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:32:45 by tsurma            #+#    #+#             */
-/*   Updated: 2024/03/11 17:55:04 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 18:01:57 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-// static void	error(void);
-
 
 void	print_map(t_all *a)
 {
@@ -66,9 +63,3 @@ void	put_tile(int y, int x, t_all *a)
 	else if (a->level->map[y][x] == 'E')
 		mlx_image_to_window(a->mlx, a->tex->lexit, (x * 50), (y * 50));
 }
-
-// static void	error(void)
-// {
-// 	puts(mlx_strerror(mlx_errno));
-// 	exit(EXIT_FAILURE);
-// }

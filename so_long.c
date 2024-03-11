@@ -6,14 +6,13 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:28:29 by tsurma            #+#    #+#             */
-/*   Updated: 2024/03/11 17:55:31 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 18:04:47 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 // static void	print_map_terminal(char **map);
-
 
 int	main(int argc, char **argv)
 {
@@ -63,7 +62,6 @@ void	*window(t_level *l)
 	multiplier = 50;
 	x = (l->max_x) * multiplier;
 	y = (l->max_y + 1) * multiplier;
-
 	mlx = mlx_init(x, y + 20, "Deep Terra", false);
 	return (mlx);
 }

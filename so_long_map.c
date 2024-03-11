@@ -6,14 +6,13 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:19:58 by tobias            #+#    #+#             */
-/*   Updated: 2024/03/11 17:54:35 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/11 18:05:10 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 static int	pos_analyse(t_player *p, t_level *l);
-
 
 void	fetch_map(t_all *a)
 {
@@ -22,7 +21,6 @@ void	fetch_map(t_all *a)
 
 	i = -1;
 	temp = NULL;
-
 	while (i != -2)
 	{
 		temp = get_next_line(a->level->fd);
@@ -32,7 +30,6 @@ void	fetch_map(t_all *a)
 		if (a->level->map == NULL)
 			exit_clean(a, NULL, UNKNOWN);
 	}
-
 }
 
 char	**ft_pointjoin(char **dest, char *src)
@@ -111,5 +108,3 @@ void	free_map(char **map)
 		free (map[i]);
 	free (map);
 }
-
-
