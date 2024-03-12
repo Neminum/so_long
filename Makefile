@@ -6,7 +6,7 @@
 #    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 15:40:37 by tsurma            #+#    #+#              #
-#    Updated: 2024/03/11 15:45:57 by tsurma           ###   ########.fr        #
+#    Updated: 2024/03/12 15:12:24 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,10 @@ MLXFLAGS = -Iinclude -ldl -lglfw -pthread -lm
 MAKEFLAGS = --no-print-directory
 
 SRC = so_long.c\
-     so_long_map.c\
-     so_long_mlx.c\
-    so_long_path.c\
-	so_long_move.c\
-	so_long_messages.c
+	so_long_map.c\
+	so_long_mlx.c\
+	so_long_path.c\
+	so_long_move.c
 
 OBJ = $(SRC:.c=.o)
 

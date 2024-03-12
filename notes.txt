@@ -1,1 +1,0 @@
-cc -g so_long.c so_long_map.c so_long_path.c so_long_mlx.c libft/libft.a ../MLX42/build/libmlx42.a -Iinclude -ldl -lglfw -pthread -lm
