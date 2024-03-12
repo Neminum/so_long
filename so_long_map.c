@@ -6,13 +6,13 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:19:58 by tobias            #+#    #+#             */
-/*   Updated: 2024/03/11 18:05:10 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/03/12 16:32:24 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static int	pos_analyse(t_player *p, t_level *l);
+static int	pos_analyse(t_all *a);
 
 void	fetch_map(t_all *a)
 {
@@ -65,7 +65,7 @@ int	map_stats(t_all *a)
 		a->level->temp_x = 0;
 		while (a->level->map[a->level->temp_y][a->level->temp_x] != '\n')
 		{
-			if (pos_analyse(a->player, a->level) == -1)
+			if (pos_analyse(a) == -1)
 				exit_clean(a, NULL, PSPAWNS);
 			a->level->temp_x++;
 		}
@@ -77,25 +77,29 @@ int	map_stats(t_all *a)
 		exit_clean(a, NULL, ESPAWNS);
 	if (a->level->target_score == 0)
 		exit_clean(a, NULL, UNKNOWN);
+	if (a->player->x == 0 || a->player->y == 0)
+		exit_clean(a, NULL, UNKNOWN);
 	return (0);
 }
 
-static int	pos_analyse(t_player *p, t_level *l)
+static int	pos_analyse(t_all *a)
 {
-	if (l->map[l->temp_y][l->temp_x] == '1' ||
-		(l->map[l->temp_y][l->temp_x] == '0'))
+	if (a->level->map[a->level->temp_y][a->level->temp_x] == '1' ||
+		(a->level->map[a->level->temp_y][a->level->temp_x] == '0'))
 		return (0);
-	else if (l->map[l->temp_y][l->temp_x] == 'P')
+	else if (a->level->map[a->level->temp_y][a->level->temp_x] == 'P')
 	{
-		if (p->x != 0 || p->y != 0)
+		if (a->player->x != 0 || a->player->y != 0)
 			return (-1);
-		p->x = l->temp_x;
-		p->y = l->temp_y;
+		a->player->x = a->level->temp_x;
+		a->player->y = a->level->temp_y;
 	}
-	else if (l->map[l->temp_y][l->temp_x] == 'C')
-		l->target_score++;
-	else if (l->map[l->temp_y][l->temp_x] == 'E')
-		l->exits++;
+	else if (a->level->map[a->level->temp_y][a->level->temp_x] == 'C')
+		a->level->target_score++;
+	else if (a->level->map[a->level->temp_y][a->level->temp_x] == 'E')
+		a->level->exits++;
+	else
+		exit_clean(a, NULL, UNKNOWN);
 	return (0);
 }
 
